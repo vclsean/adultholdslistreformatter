@@ -34,7 +34,9 @@ The script works through the following steps to process the spreadsheet:
 
 6.) Deletes columns two ("Collection"), six ("Send to"), seven ("Date"), and eight ("Notes") and shifts remaining columns left
 
-7.) Applies alternating row backgrounds
+7.) Moves call number column to the first column
+
+8.) Applies alternating row backgrounds
 
 An example problem you may encounter: titles that include a year or that otherwise contain numbers more than three digits long will have those numbers deleted by step 4. This is just one example of a problem you might encounter; there are likely others.
 

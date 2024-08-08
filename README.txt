@@ -17,7 +17,7 @@ The script works through the following steps to process the spreadsheet:
 
 1.) Deletes the first row, the title row (i.e., "Holds queue › Circulation › Koha"), and shifts remaining rows up
 
-2.) Finds and deletes the following strings: "or any available" (which is included in the barcode column), "& Autobiography", "Large Type Fiction", "Large Type Nonfiction", doubles of "DVD" and "Blu-Ray", replaces "General Fiction with simply "Fiction" (which are all included in the call number column)
+2.) Finds and deletes the following strings: "or any available" (which is included in the barcode column), "& Autobiography", "Large Type Fiction", "Large Type Nonfiction", doubles of "DVD" and "Blu-Ray", and replaces "General Fiction with simply "Fiction" (which are all included in the call number column)
 
 3.) Deletes any rows with " J ", " JP ", " JE " or " JUV-" in the call number column (to eliminate children's materials, including the parenting collection)
 

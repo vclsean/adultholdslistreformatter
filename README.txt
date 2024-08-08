@@ -36,7 +36,7 @@ The script works through the following steps to process the spreadsheet:
 
 7.) Applies alternating row backgrounds
 
-An example problem you may encounter: titles that include a year or that otherwise contain numbers more than three digits long will be deleted by step 4. This is just one example of a problem you might encounter; there are likely others.
+An example problem you may encounter: titles that include a year or that otherwise contain numbers more than three digits long will have those numbers deleted by step 4. This is just one example of a problem you might encounter; there are likely others.
 
 
 

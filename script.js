@@ -104,12 +104,9 @@ document.getElementById('print-btn').addEventListener('click', function() {
     printWindow.document.write(document.getElementById('output').innerHTML);
     printWindow.document.write('</body></html>');
     printWindow.document.close();
-    function printWindow() {
-    applyBoldStyle();
+    printWindow.focus();
     setTimeout(() => {
         printWindow.print();
     }, 100); // Adjust delay as needed
     }
-    printWindow.focus();
-    printWindow.print();
 });

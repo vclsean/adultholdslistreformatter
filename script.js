@@ -57,7 +57,7 @@ document.getElementById('process-btn').addEventListener('click', function() {
                 // Remove spaces more than two in a row
                 cell = cell.replace(/\s{3,}/g, ' ');
                 // Format text before '/' as bold
-                const parts = cell.split('/');
+                const parts = cell.split(' / ');
                 if (parts.length > 1) {
                     row[0] = `<span class="bold">${parts[0]}</span>/${parts.slice(1).join('/')}`;
                 } else {

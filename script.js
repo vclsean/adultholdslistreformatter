@@ -36,6 +36,7 @@ document.getElementById('process-btn').addEventListener('click', function() {
 	rows = rows.filter(row => !((row[3] || '').toString().includes(' JP ')));
 	rows = rows.filter(row => !((row[3] || '').toString().includes(' JUV-')));
 	rows = rows.filter(row => !((row[3] || '').toString().includes(' JE ')));
+	rows = rows.filter(row => !((row[3] || '').toString().includes(' JB ')));    
 
 
         // Sort rows by the fourth column (index 3) in alphabetical order

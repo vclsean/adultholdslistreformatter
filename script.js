@@ -105,5 +105,7 @@ document.getElementById('print-btn').addEventListener('click', function() {
     printWindow.document.write('</body></html>');
     printWindow.document.close();
     printWindow.focus();
-    printWindow.print();
+    setTimeout(function() {
+        printWindow.print();
+    }, 1000);
 });

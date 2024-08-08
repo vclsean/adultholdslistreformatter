@@ -77,6 +77,16 @@ document.getElementById('process-btn').addEventListener('click', function() {
         rows = rows.map(row => {
             return row.filter((_, index) => ![1, 5, 6, 7].includes(index));
         });
+	    
+        // Move the third column to the first column position
+        rows = rows.map(row => {
+            if (row.length >= 3) {
+                const thirdColumn = row[2]; // Extract the third column
+                row.splice(2, 1); // Remove the third column
+                row.unshift(thirdColumn); // Insert it at the beginning
+            }
+            return row;
+        });
 
         // Create table and apply formatting
         let html = '<table>';

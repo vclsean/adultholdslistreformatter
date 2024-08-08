@@ -59,7 +59,7 @@ document.getElementById('process-btn').addEventListener('click', function() {
                 // Format text before '/' as bold
                 const parts = cell.split('/');
                 if (parts.length > 1) {
-                    row[0] = `<span class="bold">${parts[0]}</span>/${parts.slice(1).join(' / ')}`;
+                    row[0] = `<span class="bold">${parts[0]}</span>/${parts.slice(1).join('/')}`;
                 } else {
                     row[0] = cell;
                 }

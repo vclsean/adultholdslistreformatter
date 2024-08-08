@@ -11,7 +11,7 @@ td, th {
 }
 
 tr:nth-child(even) {
-    background-color: #f2f2f2; /* Light gray for alternate rows */
+    background-color: #ededed; /* Light gray for alternate rows */
 }
 
 td {

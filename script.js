@@ -83,7 +83,7 @@ document.getElementById('process-btn').addEventListener('click', function() {
         rows.forEach((row, rowIndex) => {
             html += '<tr>';
             row.forEach((cell) => {
-                const bgColor = (rowIndex % 2 === 0) ? 'white' : '#f2f2f2'; // Alternating row colors
+                const bgColor = (rowIndex % 2 === 0) ? 'white' : '#d3d3d3'; // Alternating row colors
                 html += `<td style="background-color: ${bgColor};">${cell}</td>`;
             });
             html += '</tr>';

@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spreadsheet Reformatter</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <h1>Spreadsheet Reformatter</h1>
+    <input type="file" id="file-input" accept=".xlsx, .xls">
+    <button id="process-btn">Process Spreadsheet</button>
+    <center><button id="print-btn" style="display:none; font-size:28px; background-color:#B8EBB9;">Print Table</button></center>
+    <div id="output"></div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>

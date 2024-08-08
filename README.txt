@@ -3,8 +3,7 @@
 1.) Open the Koha Circulation module and select "Holds queue"
 2.) Leave the collection dropdown set as "All" and click submit
 4.) Click "Export" and select "Excel"
-5.) In the same folder as this read me file, double click OPEN REFORMATTER.HTML to open the reformatter in a web browser
-6.) Click the "Choose File" button on the page, locate the exported spreadsheet in the file explorer window that opens, and then press the "Process Spreadsheet" button
+6.) Click the "Browse..." or "Choose File" button on the page, locate the exported spreadsheet in the file explorer window that opens, and then press the "Process Spreadsheet" button
 7.) Once the reformatted table is displayed in the browser, click the green "Print table" button. It is likely best to print as a double-sided landscape page.
 
 
@@ -44,4 +43,4 @@ An example problem you may encounter: titles that include a year or that otherwi
 
 *HOW'D YOU DO IT?*
 
-I asked ChatGPT to build a website that processes spreadsheets using a few of the rules above and then added or tweaked the rules once I had a better understanding of the Javascript syntax.  -SEAN (VCL)
+I asked ChatGPT to build a website that processes spreadsheets using some of the rules above and then added or tweaked the rules once I had a better understanding of the Javascript syntax.  -SEAN (VCL)

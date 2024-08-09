@@ -37,8 +37,19 @@ document.getElementById('process-btn').addEventListener('click', function() {
 	rows = rows.filter(row => !((row[3] || '').toString().includes(' JUV-')));
 	rows = rows.filter(row => !((row[3] || '').toString().includes(' JE ')));
 	rows = rows.filter(row => !((row[3] || '').toString().includes(' JB ')));    
-	rows = rows.filter(row => !((row[3] || '').toString().includes(' BB ')));  
+	rows = rows.filter(row => !((row[3] || '').toString().includes(' BB ')));
 
+        // Check for "Videogames" in the third column and modify the first column accordingly
+        rows = rows.map(row => {
+            if ((row[3] || '').toString().includes('Videogames')) {
+                let cell = (row[0] || '').toString();
+                const index = cell.indexOf(']');
+                if (index !== -1) {
+                    row[0] = cell.substring(0, index + 1); // Keep text up to and including the ']'
+                }
+            }
+            return row;
+        });  
 
         // Sort rows by the fourth column (index 3) in alphabetical order
         rows.sort((a, b) => {
@@ -49,26 +60,47 @@ document.getElementById('process-btn').addEventListener('click', function() {
 
 	rows.unshift(headerRow);
 
-
         // Process the first column
         rows = rows.map(row => {
             if (row.length > 0) {
                 let cell = row[0].toString();
-                // Remove numbers with more than three digits
-                cell = cell.replace(/\d{4,}/g, '');
-                // Remove spaces more than two in a row
-                cell = cell.replace(/\s{3,}/g, ' ');
-                // Format text before '/' as bold
+                // Split cell at '/'
                 const parts = cell.split('/');
                 if (parts.length > 1) {
-                    row[0] = `<span class="bold">${parts[0]}</span>/${parts.slice(1).join('/')}`;
+                    // Process text before '/'
+                    const beforeSlash = parts[0];
+		    row[0] = `<span class="bold">${parts[0]}</span>/${parts.slice(1).join('/')}`;
+                    // Process text after '/'
+                    let afterSlash = parts.slice(1).join('/');
+
+                    // Remove numbers more than three characters long after the '/'
+                    afterSlash = afterSlash.replace(/\d{4,}/g, '');
+
+                    // Rejoin the cell with bold text before '/'
+                    row[0] = `<span class="bold">${beforeSlash}</span>/${afterSlash}`;
                 } else {
-                    row[0] = cell;
+                    // Remove numbers more than three characters long if there's no '/'
+                    row[0] = cell.replace(/\d{4,}/g, '');
                 }
+
+                // Remove spaces more than two in a row
+                row[0] = row[0].replace(/\s{3,}/g, ' ');
+
                 // Delete all text after ", : "
                 const index = row[0].indexOf(", : ");
                 if (index !== -1) {
                     row[0] = row[0].substring(0, index);
+                }
+            }
+            return row;
+        });
+
+        // Bold text in the first column for rows without '/'
+        rows = rows.map(row => {
+            if (row.length > 0) {
+                let cell = row[0].toString();
+                if (!cell.includes('/')) {
+                    row[0] = `<span class="bold">${cell}</span>`;
                 }
             }
             return row;

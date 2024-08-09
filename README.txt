@@ -38,11 +38,6 @@ The script works through the following steps to process the spreadsheet:
 
 8.) Applies alternating row backgrounds
 
-An example problem you may encounter: titles that include a year or that otherwise contain numbers more than three digits long will have those numbers deleted by step 4. This is just one example of a problem you might encounter; there are likely others.
+An example problem you may encounter: titles that include a year or that otherwise contain numbers more than three digits long will have those numbers deleted by step 4. This is just one example of a problem you might encounter; there are likely others. Feel free to download the files and repurpose for your own library. You can run all of this offline in a web browser if you have the files in the same directory or modify and upload them to your own github account.
 
-
-
-
-*HOW'D YOU DO IT?*
-
-I asked ChatGPT to build a website that processes spreadsheets using some of the rules above and then added or tweaked the rules once I had a better understanding of the Javascript syntax.  -SEAN (VCL)
+-SEAN (VCL)

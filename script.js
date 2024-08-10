@@ -122,13 +122,14 @@ document.getElementById('process-btn').addEventListener('click', function() {
             return row;
         });
 
-        // Create table and apply formatting
+       // Create table and apply formatting
         let html = '<table>';
         rows.forEach((row, rowIndex) => {
             html += '<tr>';
-            row.forEach((cell) => {
-                const bgColor = (rowIndex % 2 === 0) ? 'white' : '#ededed'; // Alternating row colors
-                html += `<td style="background-color: ${bgColor};">${cell}</td>`;
+            row.forEach((cell, cellIndex) => {
+                const bgColor = (rowIndex === 0) ? '#d3d3d3' : (rowIndex % 2 === 0) ? 'white' : '#ededed'; // Header row color and alternating row colors
+                const fontWeight = (rowIndex === 0) ? 'bold' : 'normal'; // Bold for the header row
+                html += `<td style="background-color: ${bgColor}; font-weight: ${fontWeight};">${cell}</td>`;
             });
             html += '</tr>';
         });

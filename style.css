@@ -8,6 +8,7 @@ td, th {
     border: 1px solid gray;
     padding: 1px;
     text-align: left;
+    font-family: Calibri, Arial, sans-serif;
 }
 
 tr:nth-child(even) {

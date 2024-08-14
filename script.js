@@ -20,7 +20,7 @@ document.getElementById('process-btn').addEventListener('click', function() {
         // Delete the first row and shift all cells up
         rows.shift();
 
-	const headerRow = rows.shift();
+        const headerRow = rows.shift();
 
         // Search for and delete strings 
         rows = rows.map(row => row.map(cell => (typeof cell === 'string') ? cell.replace(/or any available/g, '') : cell));
@@ -31,14 +31,13 @@ document.getElementById('process-btn').addEventListener('click', function() {
         rows = rows.map(row => row.map(cell => (typeof cell === 'string') ? cell.replace(/DVD DVD /g, 'DVD ') : cell));
         rows = rows.map(row => row.map(cell => (typeof cell === 'string') ? cell.replace(/Blu-Ray /g, '') : cell));
 
-
-	rows = rows.filter(row => !((row[3] || '').toString().includes(' J ')));
-	rows = rows.filter(row => !((row[3] || '').toString().includes(' JP ')));
-	rows = rows.filter(row => !((row[3] || '').toString().includes(' JUV-')));
-	rows = rows.filter(row => !((row[3] || '').toString().includes(' JE ')));
-	rows = rows.filter(row => !((row[3] || '').toString().includes(' JB ')));    
-	rows = rows.filter(row => !((row[3] || '').toString().includes(' BB ')));
-	rows = rows.filter(row => !((row[3] || '').toString().includes('Board Books ')));
+        rows = rows.filter(row => !((row[3] || '').toString().includes(' J ')));
+        rows = rows.filter(row => !((row[3] || '').toString().includes(' JP ')));
+        rows = rows.filter(row => !((row[3] || '').toString().includes(' JUV-')));
+        rows = rows.filter(row => !((row[3] || '').toString().includes(' JE ')));
+        rows = rows.filter(row => !((row[3] || '').toString().includes(' JB ')));    
+        rows = rows.filter(row => !((row[3] || '').toString().includes(' BB ')));
+        rows = rows.filter(row => !((row[3] || '').toString().includes('Board Books ')));
 
         // Check for "Videogames" in the third column and modify the first column accordingly
         rows = rows.map(row => {
@@ -59,18 +58,22 @@ document.getElementById('process-btn').addEventListener('click', function() {
             return valueA.localeCompare(valueB);
         });
 
-	rows.unshift(headerRow);
+        rows.unshift(headerRow);
 
         // Process the first column
         rows = rows.map(row => {
             if (row.length > 0) {
                 let cell = row[0].toString();
+
+                // Step to identify and remove numbers and slashes
+                cell = cell.replace(/\b\d+\/|\d+\/\d+|\d+\/\b/g, '');
+
                 // Split cell at '/'
                 const parts = cell.split('/');
                 if (parts.length > 1) {
                     // Process text before '/'
                     const beforeSlash = parts[0];
-		    row[0] = `<span class="bold">${parts[0]}</span>/${parts.slice(1).join('/')}`;
+                    row[0] = `<span class="bold">${beforeSlash}</span>/${parts.slice(1).join('/')}`;
                     // Process text after '/'
                     let afterSlash = parts.slice(1).join('/');
 
@@ -111,7 +114,7 @@ document.getElementById('process-btn').addEventListener('click', function() {
         rows = rows.map(row => {
             return row.filter((_, index) => ![1, 5, 6, 7].includes(index));
         });
-	    
+        
         // Move the third column to the first column position
         rows = rows.map(row => {
             if (row.length >= 3) {

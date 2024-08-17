@@ -38,6 +38,7 @@ document.getElementById('process-btn').addEventListener('click', function() {
         rows = rows.filter(row => !((row[3] || '').toString().includes(' JB ')));    
         rows = rows.filter(row => !((row[3] || '').toString().includes(' BB ')));
         rows = rows.filter(row => !((row[3] || '').toString().includes('Board Books ')));
+        rows = rows.filter(row => !((row[3] || '').toString().includes('Book Series ')));
 
         // Check for "Videogames" in the third column and modify the first column accordingly
         rows = rows.map(row => {

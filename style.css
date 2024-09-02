@@ -24,6 +24,11 @@ td {
     font-weight: bold; /* Bold text class */
 }
 
+.wrapper{
+width:600px; /* specify your width here */
+margin:0 auto;
+}
+
 .instructions{
-     Margin-right: 55%;
+     Text-align: left
 }

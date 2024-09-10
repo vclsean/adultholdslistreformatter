@@ -52,11 +52,20 @@ document.getElementById('process-btn').addEventListener('click', function() {
             return row;
         });  
 
-        // Sort rows by the fourth column (index 3) in alphabetical order
         rows.sort((a, b) => {
-            const valueA = (a[3] || '').toString().toLowerCase();
-            const valueB = (b[3] || '').toString().toLowerCase();
-            return valueA.localeCompare(valueB);
+            const valueA4 = (a[3] || '').toString().toLowerCase();
+            const valueB4 = (b[3] || '').toString().toLowerCase();
+            const valueA1 = (a[0] || '').toString().toLowerCase();
+            const valueB1 = (b[0] || '').toString().toLowerCase();
+
+            // First level sort by the fourth column
+            const result = valueA4.localeCompare(valueB4);
+            if (result !== 0) {
+                return result;
+            }
+
+            // Second level sort by the first column if the fourth column values are equal
+            return valueA1.localeCompare(valueB1);
         });
 
         rows.unshift(headerRow);

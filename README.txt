@@ -2,9 +2,9 @@
 
 1.) Open the Koha Circulation module and select "Holds queue"
 2.) Leave the collection dropdown set as "All" and click "Submit"
-4.) Leave all default columns visible. Click "Export" and select "Excel"
-6.) Click the "Browse..." or "Choose File" button on the page, locate the exported spreadsheet in the file explorer window that opens, and then press the "Process Spreadsheet" button
-7.) Once the reformatted table is displayed in the browser, click the green "Print table" button. It is likely best to print as a double-sided landscape page.
+3.) Leave all default columns visible. Click "Export" and select "Excel"
+4.) Click the "Browse..." or "Choose File" button on the page, locate the exported spreadsheet in the file explorer window that opens, and then press the "Process Spreadsheet" button
+5.) Once the reformatted table is displayed in the browser, click the green "Print table" button. It is likely best to print as a double-sided landscape page.
 
 
 

@@ -1,34 +1,13 @@
-table {
-    border-collapse: collapse;
-    width: 100%;
-    margin-top: 20px;
+
+.header img {
+    height: 700px;    
+    width: auto;        /* Make the image take the full width of the page */
 }
 
-td, th {
-    border: 1px solid gray;
-    padding: 1px;
-    text-align: left;
-    font-family: Calibri, Arial, sans-serif;
-    Font-size: 11.5px;
-}
-
-tr:nth-child(even) {
-    background-color: #ededed; /* Light gray for alternate rows */
-}
-
-td {
-    white-space: pre-wrap; /* Apply text wrap function */
-}
-
-.bold {
-    font-weight: bold; /* Bold text class */
-}
-
-.wrapper{
-width:600px; /* specify your width here */
-margin:0 auto;
-}
-
-.instructions{
-     Text-align: left
-}
+    @media (max-width: 768px) {
+     
+        .header img {
+            width: 350px;
+            height: auto;
+        }
+    }

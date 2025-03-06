@@ -13,4 +13,4 @@ Children's reformatter available here: https://vclsean.github.io/childrensholdsl
 Files for children's reformatter here: https://github.com/vclsean/childrensholdslistreformatter
 
 -SEAN (VCL)
-Email issues to: s.antonucci@rcls.org
+Email issues to: vclsean@gmail.com

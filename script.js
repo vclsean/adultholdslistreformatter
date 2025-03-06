@@ -93,6 +93,21 @@ function processSpreadsheet(data) {
         }
     }
 
+    // Add the condition to remove rows with "Parenting materials" in the "Shelving location" column
+    const shelvingLocationIndex = headers.indexOf("Shelving location");
+    if (shelvingLocationIndex !== -1) {
+        const rowsToDelete = [];
+        for (let i = 1; i < data.length; i++) {
+            if (data[i][shelvingLocationIndex] === "Parenting materials") {
+                rowsToDelete.push(i);
+            }
+        }
+        rowsToDelete.sort((a, b) => b - a);
+        for (const rowIndex of rowsToDelete) {
+            data.splice(rowIndex, 1);
+        }
+    }
+
     if (data.length > 2) {
         const headerRow = data.shift();
         const shelvingIndex = headers.indexOf("Shelving location");
@@ -124,8 +139,8 @@ function processSpreadsheet(data) {
                 if (data[i][shelvingIndex] === "Television Series DVD") data[i][shelvingIndex] = "TV DVD";
                 if (data[i][shelvingIndex] === "Paperback Books") data[i][shelvingIndex] = "Paperback";
                 if (data[i][shelvingIndex] === "Large Type Fiction") data[i][shelvingIndex] = "LP Fiction";
-                if (data[i][shelvingIndex] === "Biography & Autobiography") data[i][shelvingIndex] = "Biography";
-                if (data[i][shelvingIndex] === "New Biography & Autobiography") data[i][shelvingIndex] = "New Biography";
+                if (data[i][shelvingIndex] === "Biography & Autobiography") data[i][shelvingIndex] = "Bios";
+                if (data[i][shelvingIndex] === "New Biography & Autobiography") data[i][shelvingIndex] = "New Bios";
                 if (data[i][shelvingIndex] === "Large Type Nonfiction") data[i][shelvingIndex] = "LP Nonfiction";
                 if (data[i][shelvingIndex] === "New Large Type Fiction") data[i][shelvingIndex] = "New LP Fiction";
                 if (data[i][shelvingIndex] === "New Large Type Nonfiction") data[i][shelvingIndex] = "New LP Nonfiction";
@@ -133,6 +148,7 @@ function processSpreadsheet(data) {
                 if (data[i][shelvingIndex] === "Scores and Sheet Music") data[i][shelvingIndex] = "Scores";
                 if (data[i][shelvingIndex] === "Science Fiction & Fantasy") data[i][shelvingIndex] = "Sci-Fi & Fantasy";
                 if (data[i][shelvingIndex] === "New Science Fiction") data[i][shelvingIndex] = "New Sci-Fi";
+                if (data[i][shelvingIndex] === "DVD/Video Anime") data[i][shelvingIndex] = "Anime DVD";
             }
         }
     }

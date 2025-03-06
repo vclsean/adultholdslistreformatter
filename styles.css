@@ -30,6 +30,7 @@
     border: none;
     cursor: pointer;
     text-align: center;
+    border-radius: 5px;
 }
 
 #printButton:hover {

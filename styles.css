@@ -12,6 +12,11 @@
     text-align: left;
 }
 
+#outputTable th {
+    background-color: #d3d3d3; /* Slightly darker gray for header */
+    Font-size: 12.5px;
+}
+
 #outputTable tr:nth-child(even) {
     background-color: #f2f2f2;
 }

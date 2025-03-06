@@ -1,170 +1,188 @@
-document.getElementById('process-btn').addEventListener('click', function() {
-    const fileInput = document.getElementById('file-input');
-    if (fileInput.files.length === 0) {
-        alert('Please upload a spreadsheet first.');
+document.getElementById('processButton').addEventListener('click', function() {
+    const fileInput = document.getElementById('fileInput');
+    const file = fileInput.files[0];
+
+    if (!file) {
+        alert('Please select a file.');
         return;
     }
 
-    const file = fileInput.files[0];
     const reader = new FileReader();
-
     reader.onload = function(event) {
-        const data = new Uint8Array(event.target.result);
+        const data = event.target.result;
         const workbook = XLSX.read(data, { type: 'array' });
         const sheetName = workbook.SheetNames[0];
-        const sheet = workbook.Sheets[sheetName];
+        const worksheet = workbook.Sheets[sheetName];
+        const jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
 
-        // Convert sheet to JSON
-        let rows = XLSX.utils.sheet_to_json(sheet, { header: 1 });
-
-        // Delete the first row and shift all cells up
-        rows.shift();
-
-        const headerRow = rows.shift();
-
-        // Search for and delete strings 
-        rows = rows.map(row => row.map(cell => (typeof cell === 'string') ? cell.replace(/or any available/g, '') : cell));
-        rows = rows.map(row => row.map(cell => (typeof cell === 'string') ? cell.replace(/& Autobiography/g, '') : cell));
-        rows = rows.map(row => row.map(cell => (typeof cell === 'string') ? cell.replace(/General Fiction/g, 'Fiction') : cell));
-        rows = rows.map(row => row.map(cell => (typeof cell === 'string') ? cell.replace(/Large Type Fiction /g, '') : cell));
-        rows = rows.map(row => row.map(cell => (typeof cell === 'string') ? cell.replace(/Large Type Nonfiction /g, '') : cell));
-        rows = rows.map(row => row.map(cell => (typeof cell === 'string') ? cell.replace(/DVD DVD /g, 'DVD ') : cell));
-        rows = rows.map(row => row.map(cell => (typeof cell === 'string') ? cell.replace(/Blu-Ray /g, '') : cell));
-
-        rows = rows.filter(row => !((row[3] || '').toString().includes(' J ')));
-        rows = rows.filter(row => !((row[3] || '').toString().includes(' JP ')));
-        rows = rows.filter(row => !((row[3] || '').toString().includes(' JUV-')));
-        rows = rows.filter(row => !((row[3] || '').toString().includes(' JE ')));
-        rows = rows.filter(row => !((row[3] || '').toString().includes(' JB ')));    
-        rows = rows.filter(row => !((row[3] || '').toString().includes(' BB ')));
-        rows = rows.filter(row => !((row[3] || '').toString().includes('Board Books ')));
-        rows = rows.filter(row => !((row[3] || '').toString().includes('Book Series ')));
-
-        // Check for "Videogames" in the third column and modify the first column accordingly
-        rows = rows.map(row => {
-            if ((row[3] || '').toString().includes('Videogames')) {
-                let cell = (row[0] || '').toString();
-                const index = cell.indexOf(']');
-                if (index !== -1) {
-                    row[0] = cell.substring(0, index + 1); // Keep text up to and including the ']'
-                }
-            }
-            return row;
-        });  
-
-        rows.sort((a, b) => {
-            const valueA4 = (a[3] || '').toString().toLowerCase();
-            const valueB4 = (b[3] || '').toString().toLowerCase();
-            const valueA1 = (a[0] || '').toString().toLowerCase();
-            const valueB1 = (b[0] || '').toString().toLowerCase();
-
-            // First level sort by the fourth column
-            const result = valueA4.localeCompare(valueB4);
-            if (result !== 0) {
-                return result;
-            }
-
-            // Second level sort by the first column if the fourth column values are equal
-            return valueA1.localeCompare(valueB1);
-        });
-
-        rows.unshift(headerRow);
-
-        // Process the first column
-        rows = rows.map(row => {
-            if (row.length > 0) {
-                let cell = row[0].toString();
-
-                // Step to identify and remove numbers and slashes
-                cell = cell.replace(/\b\d+\/|\d+\/\d+|\d+\/\b/g, '');
-
-                // Split cell at '/'
-                const parts = cell.split('/');
-                if (parts.length > 1) {
-                    // Process text before '/'
-                    const beforeSlash = parts[0];
-                    row[0] = `<span class="bold">${beforeSlash}</span>/${parts.slice(1).join('/')}`;
-                    // Process text after '/'
-                    let afterSlash = parts.slice(1).join('/');
-
-                    // Remove numbers more than three characters long after the '/'
-                    afterSlash = afterSlash.replace(/\d{4,}/g, '');
-
-                    // Rejoin the cell with bold text before '/'
-                    row[0] = `<span class="bold">${beforeSlash}</span>/${afterSlash}`;
-                } else {
-                    // Remove numbers more than three characters long if there's no '/'
-                    row[0] = cell.replace(/\d{4,}/g, '');
-                }
-
-                // Remove spaces more than two in a row
-                row[0] = row[0].replace(/\s{3,}/g, ' ');
-
-                // Delete all text after ", : "
-                const index = row[0].indexOf(", : ");
-                if (index !== -1) {
-                    row[0] = row[0].substring(0, index);
-                }
-            }
-            return row;
-        });
-
-        // Bold text in the first column for rows without '/'
-        rows = rows.map(row => {
-            if (row.length > 0) {
-                let cell = row[0].toString();
-                if (!cell.includes('/')) {
-                    row[0] = `<span class="bold">${cell}</span>`;
-                }
-            }
-            return row;
-        });
-
-        // Delete columns two, six, seven, and eight
-        rows = rows.map(row => {
-            return row.filter((_, index) => ![1, 5, 6, 7].includes(index));
-        });
-        
-        // Move the third column to the first column position
-        rows = rows.map(row => {
-            if (row.length >= 3) {
-                const thirdColumn = row[2]; // Extract the third column
-                row.splice(2, 1); // Remove the third column
-                row.unshift(thirdColumn); // Insert it at the beginning
-            }
-            return row;
-        });
-
-       // Create table and apply formatting
-        let html = '<table>';
-        rows.forEach((row, rowIndex) => {
-            html += '<tr>';
-            row.forEach((cell, cellIndex) => {
-                const bgColor = (rowIndex === 0) ? '#d3d3d3' : (rowIndex % 2 === 0) ? 'white' : '#ededed'; // Header row color and alternating row colors
-                const fontWeight = (rowIndex === 0) ? 'bold' : 'normal'; // Bold for the header row
-                html += `<td style="background-color: ${bgColor}; font-weight: ${fontWeight};">${cell}</td>`;
-            });
-            html += '</tr>';
-        });
-        html += '</table>';
-
-        document.getElementById('output').innerHTML = html;
-        document.getElementById('print-btn').style.display = 'block'; // Show print button
+        let processedData = processSpreadsheet(jsonData);
+        displayTable(processedData);
+        document.getElementById('printButton').style.display = 'block';
     };
 
     reader.readAsArrayBuffer(file);
 });
 
-document.getElementById('print-btn').addEventListener('click', function() {
-    const printWindow = window.open('', '', 'height=600,width=800');
-    printWindow.document.write('<html><head><title>Print Table</title>');
-    printWindow.document.write('<link rel="stylesheet" href="style.css">'); // Ensure styles are applied
-    printWindow.document.write('</head><body >');
-    printWindow.document.write(document.getElementById('output').innerHTML);
-    printWindow.document.write('</body></html>');
-    printWindow.document.close();
-    printWindow.focus();
-    setTimeout(function() {
-        printWindow.print();
-    }, 250);
+function processSpreadsheet(data) {
+    if (data.length < 3) return [];
+
+    data.splice(0, 1);
+    data.splice(1, 1);
+
+    for (let row of data) {
+        if (row[1] === undefined || row[1] === null || row[1] === '') {
+            row[1] = '---';
+        }
+    }
+
+    const headers = data[0];
+    const columnsToDelete = ["Publication details", "Send to", "Notes", "Date", "Collection"];
+    const indicesToDelete = [];
+
+    for (let i = 0; i < headers.length; i++) {
+        if (columnsToDelete.includes(headers[i])) {
+            indicesToDelete.push(i);
+        }
+    }
+    indicesToDelete.sort((a, b) => b - a);
+
+    for (const index of indicesToDelete) {
+        for (const row of data) {
+            row.splice(index, 1);
+        }
+    }
+
+    const titleIndex = headers.indexOf("Title");
+    if (titleIndex !== -1) {
+        for (let i = 1; i < data.length; i++) {
+            if (data[i][titleIndex]) {
+                data[i][titleIndex] = data[i][titleIndex].replace(/\d{5,}/g, '');
+            }
+        }
+    }
+
+    const barcodeIndex = headers.indexOf("Barcode");
+    if (barcodeIndex !== -1) {
+        for (let i = 1; i < data.length; i++) {
+            if (data[i][barcodeIndex]) {
+                data[i][barcodeIndex] = data[i][barcodeIndex].replace(" or any available", "");
+            }
+        }
+    }
+
+    const callNumberIndex = headers.indexOf("Call number");
+    if (callNumberIndex !== -1) {
+        const rowsToDelete = [];
+        for (let i = 1; i < data.length; i++) {
+            if (data[i][callNumberIndex]) {
+                const callNumber = data[i][callNumberIndex];
+                if (callNumber.startsWith("JE ") || callNumber.startsWith("JP ") || callNumber.startsWith("J ") ||
+                    callNumber.startsWith("JB ") || callNumber.startsWith("JUV-") || callNumber.startsWith("BB ")) {
+                    rowsToDelete.push(i);
+                }
+            }
+        }
+        rowsToDelete.sort((a, b) => b - a);
+        for (const rowIndex of rowsToDelete) {
+            data.splice(rowIndex, 1);
+        }
+
+        for (let row of data) {
+            const callNumber = row.splice(callNumberIndex, 1)[0];
+            row.unshift(callNumber);
+        }
+    }
+
+    if (data.length > 2) {
+        const headerRow = data.shift();
+        const shelvingIndex = headers.indexOf("Shelving location");
+        const callNumberIndexSort = headers.indexOf("Call number");
+        const authorIndex = headers.indexOf("Author");
+        const titleIndexSort = headers.indexOf("Title");
+
+        if (shelvingIndex !== -1 && callNumberIndexSort !== -1 && authorIndex !== -1 && titleIndexSort !== -1) {
+            data.sort((a, b) => {
+                if (a[shelvingIndex] > b[shelvingIndex]) return 1;
+                if (a[shelvingIndex] < b[shelvingIndex]) return -1;
+                if (a[callNumberIndexSort] > b[callNumberIndexSort]) return 1;
+                if (a[callNumberIndexSort] < b[callNumberIndexSort]) return -1;
+                if (a[authorIndex] > b[authorIndex]) return 1;
+                if (a[authorIndex] < b[authorIndex]) return -1;
+                if (a[titleIndexSort] > b[titleIndexSort]) return 1;
+                if (a[titleIndexSort] < b[titleIndexSort]) return -1;
+                return 0;
+            });
+        }
+        data.unshift(headerRow);
+
+        // Apply Shelving Location changes here, after the sort
+        if (shelvingIndex !== -1) {
+            for (let i = 1; i < data.length; i++) {
+                if (data[i][shelvingIndex] === "General Fiction") data[i][shelvingIndex] = "Fiction";
+                if (data[i][shelvingIndex] === "Non-Entertainment DVD") data[i][shelvingIndex] = "DOC DVD";
+                if (data[i][shelvingIndex] === "New Non-Entertainment DVD") data[i][shelvingIndex] = "New DOC DVD";
+                if (data[i][shelvingIndex] === "Television Series DVD") data[i][shelvingIndex] = "TV DVD";
+                if (data[i][shelvingIndex] === "Paperback Books") data[i][shelvingIndex] = "Paperback";
+                if (data[i][shelvingIndex] === "Large Type Fiction") data[i][shelvingIndex] = "LP Fiction";
+                if (data[i][shelvingIndex] === "Biography & Autobiography") data[i][shelvingIndex] = "Biography";
+                if (data[i][shelvingIndex] === "New Biography & Autobiography") data[i][shelvingIndex] = "New Biography";
+                if (data[i][shelvingIndex] === "Large Type Nonfiction") data[i][shelvingIndex] = "LP Nonfiction";
+                if (data[i][shelvingIndex] === "New Large Type Fiction") data[i][shelvingIndex] = "New LP Fiction";
+                if (data[i][shelvingIndex] === "New Large Type Nonfiction") data[i][shelvingIndex] = "New LP Nonfiction";
+                if (data[i][shelvingIndex] === "Book on CD") data[i][shelvingIndex] = "Audiobook";
+                if (data[i][shelvingIndex] === "Scores and Sheet Music") data[i][shelvingIndex] = "Scores";
+                if (data[i][shelvingIndex] === "Science Fiction & Fantasy") data[i][shelvingIndex] = "Sci-Fi & Fantasy";
+                if (data[i][shelvingIndex] === "New Science Fiction") data[i][shelvingIndex] = "New Sci-Fi";
+            }
+        }
+    }
+
+    return data;
+}
+
+function displayTable(data) {
+    let tableHtml = '<table id="outputTable">';
+    if (data.length > 0) {
+        tableHtml += '<tr>';
+        for (let header of data[0]) {
+            tableHtml += '<th>' + (header === undefined ? "" : header) + '</th>';
+        }
+        tableHtml += '</tr>';
+
+        // Calculate max width for "Call number" column
+        const callNumberIndex = data[0].indexOf("Call number");
+        let maxCallNumberWidth = 0;
+        if (callNumberIndex !== -1) {
+            for (let i = 1; i < data.length; i++) {
+                const callNumber = data[i][callNumberIndex];
+                if (callNumber) {
+                    maxCallNumberWidth = Math.max(maxCallNumberWidth, callNumber.length);
+                }
+            }
+        }
+
+        for (let i = 0; i < data.length; i++) {
+            if (i === 0) continue;
+            tableHtml += '<tr>';
+            for (let j = 0; j < data[i].length; j++) {
+                let cell = data[i][j];
+                if (j === callNumberIndex && callNumberIndex !== -1) {
+                    tableHtml += `<td style="width: ${maxCallNumberWidth * 8}px; white-space: nowrap; font-weight: bold;">${cell === undefined ? "" : cell}</td>`;
+                } else {
+                    tableHtml += '<td>' + (cell === undefined ? "" : cell) + '</td>';
+                }
+            }
+            tableHtml += '</tr>';
+        }
+    }
+    tableHtml += '</table>';
+    document.getElementById('output').innerHTML = tableHtml;
+}
+
+document.getElementById('printButton').addEventListener('click', function() {
+    const printContents = document.getElementById('outputTable').outerHTML;
+    const originalContents = document.body.innerHTML;
+    document.body.innerHTML = printContents;
+    window.print();
+    document.body.innerHTML = originalContents;
 });

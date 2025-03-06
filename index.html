@@ -3,17 +3,26 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Holds Queue Reformatter</title>
-    <link rel="icon" type="image/x-icon" href="favicon.png">
-    <!-- Link to external CSS file -->
+    <title>Spreadsheet Reformatter</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-
-    <center>
-        <div class="header">
-            <img src="header-image.png" alt="Header Image">
+<div id="wrapper"><div class="instructions"><h1>Koha Adult Holds Queue Reformatter</h1>
+    <u><b><h2>Instructions</h2></b></u>
+1.) Open the Koha Circulation module and select "Holds queue"<br />&nbsp;<br />
+2.) Leave the collection dropdown set as "All" and click "Submit"<br />&nbsp;<br />
+3.) Leave all default columns visible. Click "Export" and select "Excel"<br />&nbsp;<br />
+4.) On this page, click the "Browse..." or "Choose File" button, locate the exported spreadsheet in the file explorer window that opens, and then press the "Process Spreadsheet" button<br />&nbsp;<br />
+5.) Once the reformatted table is displayed in the browser, click the green "Print" button. It is likely best to print as a double-sided landscape page.<br />&nbsp;<br />
+   <br /></div></div>
+        <div id="buttonContainer">
+            <center><input type="file" id="fileInput" accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel">
+            <button id="processButton">Process Spreadsheet</button><hr /></center>
+            <button id="printButton" style="display: none;">Print</button>
         </div>
-
+        <div id="output"></div>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.5/xlsx.full.min.js"></script>
+    <script src="script.js"></script>
 </body>
 </html>

@@ -1,13 +1,48 @@
-
-.header img {
-    height: 700px;    
-    width: auto;        /* Make the image take the full width of the page */
+#outputTable {
+    border-collapse: collapse;
+    width: 95%;
+    margin: 5px auto;
 }
 
-    @media (max-width: 768px) {
-     
-        .header img {
-            width: 350px;
-            height: auto;
-        }
-    }
+#outputTable th, #outputTable td {
+    border: 1px solid #ddd;
+    padding: 2px;
+    text-align: left;
+}
+
+#outputTable tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+#printButton {
+    display: block;
+    margin: 10px auto;
+    padding: 10px 20px;
+    font-size: 30px;
+    background-color: #90EE90;
+    border: none;
+    cursor: pointer;
+    text-align: center;
+}
+
+#printButton:hover {
+    background-color: #70c770;
+}
+
+#fileInput {
+    margin: 10px;
+}
+
+#processButton {
+    margin: 10px;
+}
+#wrapper{
+width:600px; /* specify your width here */
+margin:0 auto;
+}
+#instructions{
+     Text-align: left
+}
+#buttonContainer {
+    margin-bottom: 10px;
+}

@@ -7,21 +7,33 @@
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-<div id="wrapper"><div class="instructions"><h1>Koha Adult Holds Queue Reformatter</h1>
-    <u><b><h2>Instructions</h2></b></u>
-1.) Open the Koha Circulation module and select "Holds queue"<br />&nbsp;<br />
-2.) Leave the collection dropdown set as "All" and click "Submit"<br />&nbsp;<br />
-3.) Leave all default columns visible. Click "Export" and select "Excel"<br />&nbsp;<br />
-4.) On this page, click the "Browse..." or "Choose File" button, locate the exported spreadsheet in the file explorer window that opens, and then press the "Process Spreadsheet" button<br />&nbsp;<br />
-5.) Once the reformatted table is displayed in the browser, click the green "Print" button. It is likely best to print as a double-sided landscape page.<br />&nbsp;<br />
-   <br /></div></div>
+    <main>
+        <section class="instructions">
+            <h1>Koha Adult Holds Queue Reformatter</h1>
+            <h2>Instructions</h2>
+            <ol>
+                <li>Open the Koha Circulation module and select "Holds queue"</li>
+                <li>Leave the collection dropdown set as "All" and click "Submit"</li>
+                <li>Leave all default columns visible. Click "Export" and select "Excel"</li>
+                <li>On this page, click the "Browse..." or "Choose File" button, locate the exported spreadsheet, and then press "Process Spreadsheet"</li>
+                <li>Once the reformatted table is displayed, click the green "Print" button. It is likely best to print as a double-sided landscape page.</li>
+            </ol>
+        </section>
+
+        <form id="uploadForm">
+            <label for="fileInput" class="file-upload-label">Choose File</label>
+            <input type="file" id="fileInput" accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel">
+            <button id="processButton" type="button">Process Spreadsheet</button>
+        </form>
+        <hr />
         <div id="buttonContainer">
-            <center><input type="file" id="fileInput" accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel">
-            <button id="processButton">Process Spreadsheet</button><hr /></center>
-            <button id="printButton" style="display: none;">Print</button>
+            <center>
+                <button id="printButton" style="display: none;">Print</button>
+            </center>
         </div>
         <div id="output"></div>
-    </div>
+    </main>
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.5/xlsx.full.min.js"></script>
     <script src="script.js"></script>
 </body>

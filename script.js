@@ -71,22 +71,6 @@ function processSpreadsheet(data) {
     }
 
     const callNumberIndex = headers.indexOf("Call number");
-    const shelvingLocationIndex = headers.indexOf("Shelving location");
-
-    if (shelvingLocationIndex !== -1) {
-        const rowsToDelete = [];
-        for (let i = 1; i < data.length; i++) {
-            if (data[i][shelvingLocationIndex] === "Parenting materials") {
-                rowsToDelete.push(i);
-            }
-        }
-        rowsToDelete.sort((a, b) => b - a);
-        for (const rowIndex of rowsToDelete) {
-            data.splice(rowIndex, 1);
-        }
-    }
-}
-
     if (callNumberIndex !== -1) {
         const rowsToDelete = [];
         for (let i = 1; i < data.length; i++) {
@@ -101,16 +85,26 @@ function processSpreadsheet(data) {
         rowsToDelete.sort((a, b) => b - a);
         for (const rowIndex of rowsToDelete) {
             data.splice(rowIndex, 1);
-	}
-    }
-}
-        
-    if (shelvingLocationIndex !== -1 && callNumberIndex !== -1) {
+        }
+
         for (let row of data) {
             const callNumber = row.splice(callNumberIndex, 1)[0];
-            const shelvingLocation = row.splice(shelvingLocationIndex, 1)[0];
             row.unshift(callNumber);
-            row.unshift(shelvingLocation);
+        }
+    }
+
+    // Add the condition to remove rows with "Parenting materials" in the "Shelving location" column
+    const shelvingLocationIndex = headers.indexOf("Shelving location");
+    if (shelvingLocationIndex !== -1) {
+        const rowsToDelete = [];
+        for (let i = 1; i < data.length; i++) {
+            if (data[i][shelvingLocationIndex] === "Parenting materials") {
+                rowsToDelete.push(i);
+            }
+        }
+        rowsToDelete.sort((a, b) => b - a);
+        for (const rowIndex of rowsToDelete) {
+            data.splice(rowIndex, 1);
         }
     }
 
@@ -136,6 +130,7 @@ function processSpreadsheet(data) {
         }
         data.unshift(headerRow);
 
+        // Apply Shelving Location changes here, after the sort
         if (shelvingIndex !== -1) {
             for (let i = 1; i < data.length; i++) {
                 if (data[i][shelvingIndex] === "General Fiction") data[i][shelvingIndex] = "Fiction";
@@ -170,6 +165,7 @@ function displayTable(data) {
         }
         tableHtml += '</tr>';
 
+        // Calculate max width for "Call number" column
         const callNumberIndex = data[0].indexOf("Call number");
         let maxCallNumberWidth = 0;
         if (callNumberIndex !== -1) {

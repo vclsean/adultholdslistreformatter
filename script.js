@@ -91,7 +91,7 @@ function processSpreadsheet(data) {
         for (let i = 1; i < data.length; i++) {
             if (data[i][callNumberIndex]) {
                 const callNumber = data[i][callNumberIndex];
-                if (callNumber.startsWith("JE ") || callNumber.startsWith("JP ") || callNumber.startsWith("J ") ||
+                if (callNumber.startsWith("JE ") || callNumber.startsWith("JP ") || callNumber.startsWith("J ") || callNumber.startsWith("HOLIDAY JP ") ||
                     callNumber.startsWith("JB ") || callNumber.startsWith("JUV-") || callNumber.startsWith("BB ")) {
                     rowsToDelete.push(i);
                 }

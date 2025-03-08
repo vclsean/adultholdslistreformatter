@@ -82,6 +82,7 @@ main {
     border: 1px solid #ddd;
     padding: 1px;
     text-align: left;
+    vertical-align: middle;
 }
 
 #outputTable th {

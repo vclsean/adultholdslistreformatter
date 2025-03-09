@@ -90,8 +90,8 @@ main {
     Font-size: 12.5px;
 }
 
-#outputTable tr:nth-child(even) {
-    background-color: #d3d3d3;
+#outputTable tr:nth-child(odd) {
+    background-color: #dfdfdf;
 }
 
 #printButton {

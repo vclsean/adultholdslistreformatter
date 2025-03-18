@@ -92,7 +92,7 @@ function processSpreadsheet(data) {
             if (data[i][callNumberIndex]) {
                 const callNumber = data[i][callNumberIndex];
                 if (callNumber.startsWith("JE ") || callNumber.startsWith("JP ") || callNumber.startsWith("J ") || callNumber.startsWith("HOLIDAY JP ") || callNumber.startsWith("HOLIDAY J ") ||
-                    callNumber.startsWith("JB ") || callNumber.startsWith("JUV-") || callNumber.startsWith("BB ")) {
+                    callNumber.startsWith("JB ") || callNumber.startsWith("JUV-") || callNumber.startsWith("BB "))  || callNumber.startsWith("HOLIDAY BB "))  || callNumber.startsWith("HOLIDAY JE ")) {
                     rowsToDelete.push(i);
                 }
             }

@@ -86,22 +86,42 @@ function processSpreadsheet(data) {
         }
     }
 
-    if (callNumberIndex !== -1) {
-        const rowsToDelete = [];
-        for (let i = 1; i < data.length; i++) {
-            if (data[i][callNumberIndex]) {
-                const callNumber = data[i][callNumberIndex];
-                if (callNumber.startsWith("JE ") || callNumber.startsWith("JP ") || callNumber.startsWith("J ") || callNumber.startsWith("HOLIDAY JP ") || callNumber.startsWith("HOLIDAY J ") || callNumber.startsWith("HOLIDAY BB ") || callNumber.startsWith("HOLIDAY JE ") ||
-                    callNumber.startsWith("JB ") || callNumber.startsWith("JUV-") || callNumber.startsWith("BB ")) {
-                    rowsToDelete.push(i);
-                }
+if (callNumberIndex !== -1 || shelvingLocationIndex !== -1) {
+    const rowsToDelete = [];
+    
+    for (let i = 1; i < data.length; i++) {
+        let shouldDelete = false;
+        
+        // Check "Call Number" column
+        if (callNumberIndex !== -1 && data[i][callNumberIndex]) {
+            const callNumber = data[i][callNumberIndex];
+            if (callNumber.startsWith("JE ") || callNumber.startsWith("JP ") || callNumber.startsWith("J ") || 
+                callNumber.startsWith("HOLIDAY JP ") || callNumber.startsWith("HOLIDAY J ") || callNumber.startsWith("HOLIDAY BB ") || 
+                callNumber.startsWith("HOLIDAY JE ") || callNumber.startsWith("JB ") || callNumber.startsWith("JUV-") || 
+                callNumber.startsWith("BB ")) {
+                shouldDelete = true;
             }
         }
-        rowsToDelete.sort((a, b) => b - a);
-        for (const rowIndex of rowsToDelete) {
-            data.splice(rowIndex, 1);
+
+        // Check "Shelving location" column
+        if (shelvingLocationIndex !== -1 && data[i][shelvingLocationIndex] === "Board Books") {
+            shouldDelete = true;
+        }
+
+        if (shouldDelete) {
+            rowsToDelete.push(i);
         }
     }
+
+    // Sort indexes in descending order to prevent shifting issues while deleting
+    rowsToDelete.sort((a, b) => b - a);
+    
+    // Delete rows from the data array
+    for (const rowIndex of rowsToDelete) {
+        data.splice(rowIndex, 1);
+    }
+}
+
 
     if (shelvingLocationIndex !== -1 && callNumberIndex !== -1) {
         for (let row of data) {

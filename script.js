@@ -95,7 +95,7 @@ if (callNumberIndex !== -1 || shelvingLocationIndex !== -1) {
         // Check "Call Number" column
         if (callNumberIndex !== -1 && data[i][callNumberIndex]) {
             const callNumber = data[i][callNumberIndex];
-            if (callNumber.startsWith("JE ") || callNumber.startsWith("JP ") || callNumber.startsWith("J ") || 
+            if (callNumber.startsWith("JE ") || callNumber.startsWith("JP ") || callNumber.startsWith("J ") || callNumber.startsWith("BABY JP ") ||
                 callNumber.startsWith("HOLIDAY JP ") || callNumber.startsWith("HOLIDAY J ") || callNumber.startsWith("HOLIDAY BB ") || 
                 callNumber.startsWith("HOLIDAY JE ") || callNumber.startsWith("JB ") || callNumber.startsWith("JUV-") || callNumber.startsWith("SERIES J ") || callNumber.startsWith("NEW J ") ||
                 callNumber.startsWith("BB ")) {
